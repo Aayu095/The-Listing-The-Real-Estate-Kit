@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Listing — The Real Estate Kit · Live Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F6F1E7;--parchment:#EFE7D4;--ink:#1D1B18;--oxblood:#7C2128;--stone:#6E6455;--hairline:#C9BCA0}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Inter,Arial,sans-serif;background:var(--paper);color:var(--ink)}
+  .mono{font-family:"JetBrains Mono",monospace}
+  .hero{padding:72px 24px 56px;text-align:center;border-bottom:3px solid var(--ink)}
+  .eyebrow{letter-spacing:.35em;font-size:11px;font-weight:600;color:var(--oxblood);text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:700;font-size:clamp(40px,6vw,72px);line-height:1.02;margin:18px auto 14px;max-width:880px}
+  h1 em{color:var(--oxblood);font-weight:500}
+  .sub{max-width:680px;margin:0 auto;font-size:17px;line-height:1.6}
+  .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .chip{border:1.5px solid var(--ink);padding:8px 16px;font-size:13px;font-weight:600;font-family:"JetBrains Mono",monospace}
+  .chip.solid{background:var(--oxblood);border-color:var(--oxblood);color:var(--paper)}
+  .wrap{max-width:1120px;margin:0 auto;padding:52px 24px 24px}
+
+  .viewer{background:var(--paper);border:2px solid var(--ink);overflow:hidden}
+  .viewer-bar{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:2px solid var(--ink);flex-wrap:wrap}
+  .dots{display:flex;gap:7px;flex:none}
+  .dots span{width:11px;height:11px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+  .tab{appearance:none;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);font:600 13.5px Inter,Arial,sans-serif;padding:9px 16px;cursor:pointer}
+  .tab:hover{border-color:var(--oxblood);color:var(--oxblood)}
+  .tab.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .fullscreen{font:700 13.5px Inter,Arial,sans-serif;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .fullscreen:hover{color:var(--oxblood);text-decoration:underline}
+  .stage{height:min(76vh,780px);background:var(--paper);position:relative}
+  .stage iframe{width:100%;height:100%;border:0;display:block;background:var(--paper)}
+  .stage .poster-wrap{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:var(--parchment);padding:26px}
+  .stage .poster-wrap img{max-height:100%;max-width:100%;border:2px solid var(--ink)}
+  .stage.poster iframe{display:none}
+  .stage.poster .poster-wrap{display:flex}
+  .viewer-cap{padding:14px 20px 16px;font-size:13.5px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:2px solid var(--ink)}
+
+  .grid{display:grid;grid-template-columns:1fr;gap:22px;margin-top:26px}
+  @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:var(--paper);border:2px solid var(--ink);overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;height:100%}
+  .card:hover{border-color:var(--oxblood)}
+  .thumb{aspect-ratio:16/9;overflow:hidden;background:var(--paper);flex:none;border-bottom:2px solid var(--ink)}
+  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+  .thumb.poster img{object-fit:contain;object-position:center}
+  .cbody{padding:22px 24px 26px;display:flex;flex-direction:column;flex:1}
+  .tag{font-size:11px;font-weight:600;letter-spacing:.25em;color:var(--oxblood);text-transform:uppercase;font-family:"JetBrains Mono",monospace}
+  .cbody h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:700;margin:8px 0 8px}
+  .cbody p{font-size:14.5px;line-height:1.6}
+  .open{margin-top:auto;padding-top:16px;font-weight:700;font-size:14px}
+
+  .band{border:2px solid var(--ink);padding:38px;margin:26px 0}
+  .band h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:32px;font-weight:700;margin-bottom:10px}
+  .band h3 em{color:var(--oxblood);font-weight:500}
+  .band p{line-height:1.65;font-size:15.5px;max-width:800px}
+  .band code{border:1.5px solid var(--ink);padding:2px 7px;font-size:13.5px;font-family:"JetBrains Mono",monospace}
+  footer{text-align:center;padding:26px 24px 44px;font-size:13px;line-height:1.7;border-top:3px solid var(--ink);margin-top:26px}
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="eyebrow">Hyper Elements Template Challenge</div>
+    <h1>The Listing — drawn <em>to measure</em></h1>
+    <p class="sub">One fictional property file becomes four finished templates: a new-listing email, a listing page, a two-page brochure &amp; cost-sheet PDF, and a poster. The floor plan is drawn in code from the room data — and every figure, from ₹ per sq ft to the EMI, is computed from the same file, never typed in.</p>
+    <div class="chips">
+      <span class="chip solid">0 errors · 0 warnings</span>
+      <span class="chip">Email · Page · Document · Canvas</span>
+      <span class="chip">7 email-client previews</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="viewer" aria-label="Live template viewer">
+      <div class="viewer-bar">
+        <div class="dots" aria-hidden="true">
+          <span style="background:#1D1B18"></span><span style="background:#7C2128"></span><span style="background:#1D1B18"></span>
+        </div>
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-view="page" role="tab">Listing page</button>
+          <button class="tab" data-view="email" role="tab">Listing alert</button>
+          <button class="tab" data-view="report" role="tab">Brochure &amp; cost sheet</button>
+          <button class="tab" data-view="poster" role="tab">Poster</button>
+        </div>
+        <a class="fullscreen" id="fullscreenLink" href="listing.html" target="_blank" rel="noopener">Open full screen ↗</a>
+      </div>
+      <div class="stage" id="stage">
+        <iframe id="stageFrame" src="listing.html" title="Template preview" loading="eager"></iframe>
+        <div class="poster-wrap"><img src="poster.png" alt="The Listing poster, 1080 by 1350"></div>
+      </div>
+      <div class="viewer-cap">
+        <span id="capText"><strong>Page · 1120px</strong> — the listing page, rendered live from the template.</span>
+        <span>Rendered with Hyper Elements · one listing file in <span class="mono">src/data.ts</span></span>
+      </div>
+    </section>
+
+    <div class="grid">
+      <a class="card" href="listing.html">
+        <div class="thumb"><img src="thumb-page.png" alt="The Listing page"></div>
+        <div class="cbody"><div class="tag">Page · 1120px</div><h2>The listing page</h2><p>The showpiece: a drawing sheet in four numbered sections — the plan drawn in code with dimension strings and a title block, the room schedule with share bars, the full cost sheet with the loan panel, the locality gauge, and the open-house visit section.</p><div class="open">Open the page →</div></div>
+      </a>
+      <a class="card" href="alert.html">
+        <div class="thumb"><img src="thumb-email.png" alt="The Listing email"></div>
+        <div class="cbody"><div class="tag">Email · 600px</div><h2>New-listing alert</h2><p>The sheet in email-safe tables: masthead, the price panel, the facts grid, "the plan, in words" — room areas as ruled rows — the computed money (EMI and all-in cost), the oxblood open-house band, and two square buttons.</p><div class="open">Open the email →</div></div>
+      </a>
+      <a class="card" href="brochure.pdf">
+        <div class="thumb"><img src="thumb-brochure.png" alt="The Listing brochure, page 1"></div>
+        <div class="cbody"><div class="tag">Document · A4 PDF, 2 pages</div><h2>Brochure &amp; cost sheet</h2><p>The printed sheet: the plan and the verdict on page 1; page 2 carries the room schedule and the arithmetic in full — stamp duty and registration shown as rate × price, the amortised loan, total interest and repayment, with real page numbers.</p><div class="open">Open the PDF →</div></div>
+      </a>
+      <a class="card" href="poster.png">
+        <div class="thumb poster"><img src="poster.png" alt="The Listing poster"></div>
+        <div class="cbody"><div class="tag">Canvas · 1080 × 1350</div><h2>The poster</h2><p>The drawing sheet as a poster: masthead, the plan as the hero, the price set like a title block with the sheet stamp, a measured cost strip (EMI · all-in · open house), and the one oxblood band for the open house.</p><div class="open">Open the poster →</div></div>
+      </a>
+    </div>
+
+    <div class="band">
+      <h3>One file in, <em>every figure</em> out</h3>
+      <p>Change the asking price in <code>src/data.ts</code> — or a room's width, the stamp-duty rate, the loan share — and all four templates re-derive themselves: the plan redraws, room areas and the carpet total re-sum, ₹ per sq ft, carpet efficiency, the locality verdict, stamp duty, registration, the EMI and total interest all recompute. In the sample listing, ₹1.85 crore over 1,450 sq ft of carpet is <code>₹12,759 / sq ft</code> — <code>+7.2%</code> against the Whitefield average, and the sheet says so plainly: at a premium.</p>
+    </div>
+  </main>
+
+  <footer>
+    The Listing is fictional. Sample data — the property, the firm, the agent, the prices and the rates are invented; the arithmetic is real.<br>
+    Built with Hyper Elements · Cormorant Garamond, Inter &amp; JetBrains Mono (SIL OFL)
+  </footer>
+
+<script>
+  var views = {
+    page:   { src: 'listing.html',  cap: '<strong>Page · 1120px</strong> — the listing page, rendered live from the template.' },
+    email:  { src: 'alert.html',    cap: '<strong>Email · 600px</strong> — the new-listing alert, rendered live from the template.' },
+    report: { src: 'brochure.pdf',  cap: '<strong>Document · A4 PDF, 2 pages</strong> — the brochure & cost sheet, rendered live from the template.' },
+    poster: { src: 'poster.png',    cap: '<strong>Canvas · 1080 × 1350</strong> — the poster, rendered live from the template.' }
+  };
+  var stage = document.getElementById('stage');
+  var frame = document.getElementById('stageFrame');
+  var cap = document.getElementById('capText');
+  var full = document.getElementById('fullscreenLink');
+  document.querySelectorAll('.tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var v = views[btn.dataset.view];
+      stage.classList.toggle('poster', btn.dataset.view === 'poster');
+      if (btn.dataset.view !== 'poster') frame.src = v.src;
+      full.href = v.src;
+      cap.innerHTML = v.cap;
+    });
+  });
+</script>
+</body>
+</html>
